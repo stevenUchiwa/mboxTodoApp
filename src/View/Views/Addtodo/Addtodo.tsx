@@ -1,4 +1,4 @@
-import React, {FC,useState,ChangeEvent} from 'react';
+import React, {FC,useState,ChangeEvent,useContext} from 'react';
 import { observer } from "mobx-react-lite";
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -7,11 +7,11 @@ import {Todo,TodoList} from '../../../Store/mainstore';
 import { interfaceTodos} from '../../../CustomType/todo';
 import Paper from '@material-ui/core/Paper';
 import useStyles from './style';
+import {StoreContext} from '../../../App';
 
 
-
-
-const AddTodo:FC<{todoList: interfaceTodos }> = ({todoList}) => {
+const AddTodo:FC = () => {
+   const MyContext = useContext(StoreContext);
    const classes = useStyles()
    const [textfi, settextfi] = useState('')
    const handleAddTodo = () => {
@@ -20,8 +20,7 @@ const AddTodo:FC<{todoList: interfaceTodos }> = ({todoList}) => {
         alert('text vide')
         
     }else{
-        const td = new Todo(textfi)
-        todoList.addTd(td)
+        MyContext.listeTodoStore.addTd(textfi)
         settextfi('')
     }
       

@@ -4,19 +4,20 @@ import Testmobx from './View';
 import 'fontsource-roboto';
 import './App.css';
 import icomDomainStore from './Store/icomDomaineStore';
-import {interfaceIconStore} from './CustomType/todo';
+import Mstore from './Store';
+import {interfaceIconStore,interfaceMainStore} from './CustomType/todo';
 import { observer } from "mobx-react-lite";
 
-const StoreContext = createContext<interfaceIconStore>({} as interfaceIconStore);
+export const StoreContext = createContext<interfaceMainStore>({} as interfaceMainStore);
 
 const IcomObs:FC = observer(()=>{
   const timer = useContext(StoreContext);
   return(
     <div className="App">
     <header className="App-header">
-      <input type="text" onChange={event => timer.setIncome(event.target.value)} placeholder="Income" className="income-input"/>
+      <input type="text" onChange={event => timer.icomStore.setIncome(event.target.value)} placeholder="Income" className="income-input"/>
       <button type="button" className="calculate-btn">Calculate</button>
-      <p>Income: ${timer.incomeBeforeTax}.00</p>
+      <p>Income: ${timer.icomStore.incomeBeforeTax}.00</p>
       <img src={logo} className="App-logo" alt="logo" />
     </header>
   </div>
@@ -25,17 +26,10 @@ const IcomObs:FC = observer(()=>{
 
 function App() {
   return (
-    <StoreContext.Provider value={new icomDomainStore()}>
-      {/* <div className="App">
-        <Testmobx/>
-      <header className="App-header">
-           <input type="text" placeholder="Income" className="income-input"/>
-           <button type="button" className="calculate-btn">Calculate</button>
-           <img src={logo} className="App-logo" alt="logo" />
-      </header>
-    </div> */}
-    <IcomObs/>
-</StoreContext.Provider>
+    <StoreContext.Provider value={new Mstore()}>
+      <Testmobx/>
+      <IcomObs/>
+    </StoreContext.Provider>
     
   );
 }

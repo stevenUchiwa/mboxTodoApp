@@ -7,16 +7,19 @@ class Todo {
     title = "";
     finished = false;
 
-    constructor(title: string){
+    constructor(){
         makeObservable(this, {
             title: observable,
             finished: observable,
-            toggle: action
+            toggle: action,
+            addTodo: action
           });
-          this.title = title;
     }
     toggle() {
         this.finished = !this.finished;
+    }
+    addTodo(value: string){
+      this.title = value;
     }
 }
 
@@ -26,16 +29,17 @@ class TodoList {
     get unfinishedTodoCount() {
       return this.todos.filter(todo => !todo.finished).length;
     }
-    constructor(todos: Array<interfaceTodo>) {
+    constructor() {
       makeObservable(this, {
         todos: observable,
         unfinishedTodoCount: computed,
         addTd: action
       });
-      this.todos = todos;
     }
-    addTd(value:any){
-      this.todos.push(value)
+    addTd(value: string){
+      const tmpTodo = new Todo();
+      tmpTodo.addTodo(value)
+      this.todos.push(tmpTodo)
     }
   }
 
