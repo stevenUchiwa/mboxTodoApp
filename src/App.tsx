@@ -1,25 +1,42 @@
-import React from 'react';
+import React,{createContext, useContext,FC} from 'react';
 import logo from './logo.svg';
+import Testmobx from './View';
+import 'fontsource-roboto';
 import './App.css';
+import icomDomainStore from './Store/icomDomaineStore';
+import {interfaceIconStore} from './CustomType/todo';
+import { observer } from "mobx-react-lite";
+
+const StoreContext = createContext<interfaceIconStore>({} as interfaceIconStore);
+
+const IcomObs:FC = observer(()=>{
+  const timer = useContext(StoreContext);
+  return(
+    <div className="App">
+    <header className="App-header">
+      <input type="text" onChange={event => timer.setIncome(event.target.value)} placeholder="Income" className="income-input"/>
+      <button type="button" className="calculate-btn">Calculate</button>
+      <p>Income: ${timer.incomeBeforeTax}.00</p>
+      <img src={logo} className="App-logo" alt="logo" />
+    </header>
+  </div>
+  );
+})
 
 function App() {
   return (
-    <div className="App">
+    <StoreContext.Provider value={new icomDomainStore()}>
+      {/* <div className="App">
+        <Testmobx/>
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+           <input type="text" placeholder="Income" className="income-input"/>
+           <button type="button" className="calculate-btn">Calculate</button>
+           <img src={logo} className="App-logo" alt="logo" />
       </header>
-    </div>
+    </div> */}
+    <IcomObs/>
+</StoreContext.Provider>
+    
   );
 }
 
